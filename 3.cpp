@@ -1,5 +1,6 @@
 #include <vector>
 #include <list>
+#include <map>
 #include <string>
 #include <iostream>
 #include <algorithm>
@@ -9,25 +10,22 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        list<char> already;
+        map<char, int> already;
+        int start=0, end=0;
         int maxLength = 0;
-        int currentLength = 0;
         for(int i=0;i<s.length();i++){
-            char current = s[i];
-            list<char>::iterator itr = find(already.begin(),already.end(),current);
-            if(itr == already.end()){
-                already.push_back(current);
-                currentLength++;
+            map<char,int>::iterator itr = already.find(s[i]);
+            if(itr==already.end()){
+                already[s[i]] = i;
+                end = i;
             }else{
-                if(currentLength>maxLength){
-                    maxLength = currentLength;
-                }
-                already.erase(already.begin(),++itr);
-                already.push_back(current);
-                currentLength = already.size();
+                maxLength = max(maxLength,end-start+1);
+                start = max(start,already[s[i]]+1);
+                already[s[i]] = i;
+                end = i;
             }
         }
-        maxLength = max(currentLength, maxLength);
+        maxLength = max(maxLength,end-start+1);
         return maxLength;
     }
 };
