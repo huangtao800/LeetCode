@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 Given a positive integer, return its corresponding column title as appear in an Excel sheet.
 
@@ -11,9 +12,11 @@ For example:
     27 -> AA
     28 -> AB 
 */
-
-#include <iostream>
 #include <string>
+#include <iostream>
+#include <vector>
+#include <cmath>
+
 
 using namespace std;
 
@@ -36,7 +39,7 @@ public:
             }
             
             n = n - tail;   // Remove last number and divided by 26;
-            n = n / 26;     // In this way, b will be the last number for next iteration.
+            n = n / 26;     // In this way, b will be the last number.
         }
         return s;
     }
@@ -46,4 +49,7 @@ int main(){
     Solution s;
     string r = s.convertToTitle(676);
     cout << r << endl;
+
+    return 0;
+
 }
