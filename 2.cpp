@@ -19,79 +19,73 @@ void printList(ListNode* r){
 class Solution {
 public:
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-        ListNode *result = NULL;
-        ListNode *head = NULL;
+        int progress = 0;
         ListNode *tmpL1 = l1;
         ListNode *tmpL2 = l2;
 
-        int longList = 0;
-        while(tmpL1!=NULL || tmpL2!=NULL){
-
-            if(tmpL1!=NULL && tmpL2 !=NULL){
-                if(head!=NULL) cout << "head before: "<< head->val << endl;
-                ListNode tmp(tmpL1->val + tmpL2->val);                
-                if(head!=NULL) cout << "head after: "<< head->val << endl;
-                if(result==NULL){
-                    result = &tmp;
-                    head = result;
-                }else{
-                    result->next = &tmp;
-                    result = result->next;
-                    
-                }
-                tmpL1 = tmpL1->next;
-                tmpL2 = tmpL2->next;;
-            }else if(tmpL1==NULL){
-                longList = 2;
-                ListNode tmp(tmpL2->val);
-                result->next = &tmp;
-                result = result->next;
-                tmpL2 = tmpL2->next;
-            }else{
-                longList = 1;
-                ListNode tmp(tmpL1->val);
-                result->next = &tmp;
-                result = result->next;
-                tmpL1 = tmpL1->next;
-            }
+        ListNode *start = NULL;
+        while(tmpL1!=NULL && tmpL2!=NULL){
+            tmpL1 = tmpL1->next;
+            tmpL2 = tmpL2->next;
+        }
+        if(tmpL2==NULL){
+            ListNode *tmp = l1;
+            l1 = l2;
+            l2 = tmp;
         }
 
-        // printList(head);
         tmpL1 = l1;
         tmpL2 = l2;
-        if(longList == 0 || longList == 1){
-            while(head!=NULL){
-                tmpL1->val = head->val;
-                tmpL1 = tmpL1->next;
-                head = head->next;
+        while(tmpL1!=NULL){
+            start = tmpL2;
+            start->val = tmpL1->val + tmpL2->val + progress;
+            if(start->val>=10){
+                start->val = start->val - 10;
+                progress = 1;
+            }else{
+                progress = 0;
             }
-            return l1;
-        }else{
-            while(head!=NULL){
-                tmpL2->val = head->val;
-                tmpL2 = tmpL2->next;
-                head = head->next;
-            }         
-            return l2;
+
+            tmpL1 = tmpL1->next;
+            tmpL2 = tmpL2->next;
         }
+
+        while(tmpL2!=NULL){
+            start = tmpL2;
+            start->val = tmpL2->val + progress;
+            if(start->val >= 10){
+                start->val = start->val - 10;
+                progress = 1;
+            }else{
+                progress = 0;
+            }
+            tmpL2 = tmpL2->next;
+        }
+        if(progress){
+            ListNode *tmp = new ListNode(progress);
+            start->next = tmp;
+        }
+        return l2;
     }
 };
 
 
 int main(){
-    ListNode a1(2);
-    ListNode a2(4);
-    ListNode a3(3);
-    a1.next = &a2;
-    a2.next = &a3;
+    ListNode a1(5);
+    // ListNode a2(4);
+    // ListNode a3(5);
+    // a1.next = &a2;
+    // a2.next = &a3;
 
     ListNode b1(5);
-    ListNode b2(6);
-    ListNode b3(4);
-    b1.next = &b2;
-    b2.next = &b3;
+    // ListNode b2(6);
+    // ListNode b3(4);
+    // b1.next = &b2;
+    // b2.next = &b3;
 
     Solution s;
     ListNode *result = s.addTwoNumbers(&a1,&b1);
+    printList(result);
+    // delete result;
     return 0;
 }
