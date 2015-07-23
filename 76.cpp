@@ -50,24 +50,26 @@ public:
         			minWindowLength = end - start + 1;
         		}
 
-        		int firstMatch = matchIndexList.front();	// remove the first matched char
-        		tAppear[s[firstMatch]]--;
-        		matchIndexList.pop_front();
-
-        		while(tAppear[s[firstMatch]] >= tMap[s[firstMatch]]){	// check if all chars are found after removing the first matched char
-        			firstMatch = matchIndexList.front();
-        			left = firstMatch;
-        			if(right-left+1 < minWindowLength){		// update start
-        				start = left;
-        				end = right;
-        				minWindowLength = end - start + 1;
-        			}
-
-        			tAppear[s[firstMatch]]--;	// remove the first matched char
+        		int firstMatch = 0;	
+        		while(true){
+        			firstMatch = matchIndexList.front();	// iteratively remove the first matched char until at least one char is missing
+        			tAppear[s[firstMatch]]--;
         			matchIndexList.pop_front();
+
+        			if(tAppear[s[firstMatch]] >= tMap[s[firstMatch]]){
+        				firstMatch = matchIndexList.front();
+        				left = firstMatch;
+        				if(right - left + 1 < minWindowLength){
+        					start = left;
+        					end = right;
+        					minWindowLength = end - start + 1;
+        				}
+        			}else{
+        				firstMatch = matchIndexList.front();
+        				left = firstMatch;
+        				break;
+        			}
         		}
-        		firstMatch = matchIndexList.front();
-        		left = firstMatch;
         	}
         }
 
