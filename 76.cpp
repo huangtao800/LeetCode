@@ -56,7 +56,7 @@ public:
         			tAppear[s[firstMatch]]--;
         			matchIndexList.pop_front();
 
-        			if(tAppear[s[firstMatch]] >= tMap[s[firstMatch]]){
+        			if(tAppear[s[right]] == tMap[s[right]] && findAllCharacter(tAppear, tMap)){	// check if all chars are found (the first if statement is used to cut off unnecessarily call findAllCharacter)
         				firstMatch = matchIndexList.front();
         				left = firstMatch;
         				if(right - left + 1 < minWindowLength){
